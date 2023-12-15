@@ -9,9 +9,9 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="col-span-3 mx-12 pt-6">
+  <div class="col-span-3 mx-12 pt-12">
     <MapboxMap
-      class="absolute w-[115vh] h-[80vh] border border-gray-300 rounded-md shadow-md overflow-hidden"
+      class="absolute w-[115vh] h-[70vh] border border-gray-300 rounded-md shadow-md overflow-hidden"
       ref="mapboxMap"
       :zoom="9"
       :center="location"
@@ -23,9 +23,12 @@ const props = defineProps({
         v-for="cinema in cinemasList"
         :key="cinema.id"
         :lng-lat="[cinema.longitude, cinema.latitude]"
-        :offset="[-12, -24]"
         :draggable="false"
-      />
+      >
+        <template v-slot:popup>
+          <p>{{ cinema.nom }}</p>
+        </template>
+      </MapboxMarker>
     </MapboxMap>
   </div>
 </template>
