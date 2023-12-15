@@ -4,13 +4,24 @@ const baseUrl = "https://data.culture.gouv.fr/api/explore/v2.1/catalog/datasets/
 const inputValue = ref("");
 const cinemasList = ref([]);
 
+const sortByDistance = (cinemas, location) => {
+  const sortedCinemas = cinemas.sort((a, b) => {
+    const aDistance = Math.sqrt(Math.pow(a.longitude - location.lng, 2) + Math.pow(a.latitude - location.lat, 2));
+    const bDistance = Math.sqrt(Math.pow(b.longitude - location.lng, 2) + Math.pow(b.latitude - location.lat, 2));
+    a.distance = aDistance;
+    b.distance = bDistance;
+    return aDistance - bDistance;
+  });
+  return sortedCinemas;
+};
+
 const fetchCinemas = async (location) => {
   try {
     const response = await fetch(
-      baseUrl + `records?where=within_distance(geolocalisation%2C%20geom'POINT(${location.lng}%20${location.lat})'%2C%2010km)&limit=20`
+      baseUrl + `records?where=within_distance(geolocalisation%2C%20geom'POINT(${location.lng}%20${location.lat})'%2C%2010km)&limit=50`
     );
     const data = await response.json();
-    cinemasList.value = data.results;
+    cinemasList.value = sortByDistance(data.results, location);
   } catch (error) {
     console.error(error);
   }
@@ -81,8 +92,13 @@ const getInputLocation = async () => {
             <p class="font-bold">{{ cinema.nom }}</p>
             <p>{{ cinema.commune }}</p>
           </div>
-          <p>ecrans: {{ cinema.ecrans }}</p>
-          <p>fauteuils: {{ cinema.fauteuils }}</p>
+          <div class="flex justify-between">
+            <div>
+              <p>ecrans: {{ cinema.ecrans }}</p>
+              <p>fauteuils: {{ cinema.fauteuils }}</p>
+            </div>
+            <p>distance: {{ (cinema.distance * 100).toFixed(1) }}km</p>
+          </div>
         </li>
       </ul>
     </div>
