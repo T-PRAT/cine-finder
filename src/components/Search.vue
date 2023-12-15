@@ -87,7 +87,7 @@ const getInputLocation = async () => {
     <div class="divider" />
     <div>
       <ul v-for="cinema in cinemasList" :key="cinema.id" class="my-4">
-        <li class="bg-base-200 p-2 shadow-xl rounded-xl">
+        <li class="bg-base-200 p-2 shadow rounded-xl">
           <div class="flex justify-between">
             <p class="font-bold">{{ cinema.nom }}</p>
             <p>{{ cinema.commune }}</p>

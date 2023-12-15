@@ -1,5 +1,6 @@
 <script setup>
 import Search from "./components/Search.vue";
+import Map from "./components/Map.vue";
 </script>
 
 <template>
@@ -8,5 +9,6 @@ import Search from "./components/Search.vue";
   </header>
   <main class="m-y-12 font-mono grid grid-cols-5">
     <Search />
+    <Map />
   </main>
 </template>
